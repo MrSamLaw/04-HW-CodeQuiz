@@ -1,39 +1,71 @@
 // Element Selectors
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
+
+var questionsElement = document.querySelector(".questions-text");
 // Variables
 
 var timer;
 var timerCount;
 var qLimit;
+var currentQ;
 
-const questionsArr = [
-    {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }, {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }, {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }, {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }, {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }, {
-        question: "", option01: "", option02: "", option03: "", option04: "", correct: ""
-    }];
+const myQuestions = [
+    { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" },
+    { question: "Which one is false?", answers: { 1: "False", 2: "True", 3: "True", 4: "True" }, correctAnswer: "1" },
+    { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" },
+    { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" }
+];
 
 // Functions
 function initGame() {
-
+    var qLimit = Object.keys(myQuestions).length;
+    currentQ = 0;
 }
 
 function startGame() {
     timerCount = 5;
+
     startTimer();
+    displayQuestion(currentQ);
+}
+
+function displayQuestion(currentQuestion) {
+    const output = [];
+
+    console.log(currentQ);
+    console.log(currentQuestion);
+    console.log(myQuestions[currentQuestion].answers)
+
+    const answers = [];
+
+    for (choice in myQuestions[currentQuestion].answers) {
+        answers.push(`<button name="q${currentQ}" value="${choice}">
+        ${myQuestions[currentQuestion].answers[choice]}
+      </button>`);
+    }
+
+    output.push(
+        `<div class="question"> ${myQuestions[currentQuestion].question} </div>
+        <div class="answers"> ${answers.join('')} </div>`
+    );
+    questionsElement.innerHTML = output.join("");
+    currentQ++;
 }
 
 function endGame() {
 
+}
+
+function checkAnswer(guess) {
+
+    // Checks if guess is the correct answer
+    if (guess === questionsArr.correct) {
+        return true;
+    } else {
+        timerCount -= 5;
+        return false;
+    }
 }
 
 function startTimer() {
@@ -61,7 +93,7 @@ function startTimer() {
 // Main game
 function playGame() {
 
-    // initGame();
+    initGame();
     startGame();
     // endGame();
 
