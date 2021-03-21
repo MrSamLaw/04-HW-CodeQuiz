@@ -3,6 +3,7 @@ var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
 
 var questionsElement = document.querySelector(".questions-text");
+
 // Variables
 
 var timer;
@@ -40,7 +41,7 @@ function displayQuestion(currentQuestion) {
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button name="q${currentQ}" value="${choice}">
+        answers.push(`<button name="q${currentQ}-${choice}" value="${choice}">
         ${myQuestions[currentQuestion].answers[choice]}
       </button>`);
     }
@@ -49,8 +50,16 @@ function displayQuestion(currentQuestion) {
         `<div class="question"> ${myQuestions[currentQuestion].question} </div>
         <div class="answers"> ${answers.join('')} </div>`
     );
+
     questionsElement.innerHTML = output.join("");
     currentQ++;
+
+    const buttonId = [];
+    for (choice in myQuestions[currentQuestion].answers) {
+        buttonId.push(`q${currentQ}-${choice}`);
+        console.log(buttonId[choice]);
+        document.getElementById(buttonId[choice]).addEventListener("click", checkAnswer(getElementById(buttonId[choice]).value))
+    }
 }
 
 function endGame() {
