@@ -1,8 +1,9 @@
 // Element Selectors
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
-
+var myBtn = document.querySelectorAll("#myBtn");
 var questionsElement = document.querySelector(".questions-text");
+var choicesElement = document.querySelector(".choices-buttons");
 
 // Variables
 
@@ -13,7 +14,7 @@ var currentQ;
 
 const myQuestions = [
     { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" },
-    { question: "Which one is false?", answers: { 1: "False", 2: "True", 3: "True", 4: "True" }, correctAnswer: "1" },
+    { question: "Which one is false?", answers: { 1: "False", 2: "True", 3: "True", 4: "True" }, correctAnswer: "2" },
     { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" },
     { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" }
 ];
@@ -27,6 +28,7 @@ function initGame() {
 function startGame() {
     timerCount = 5;
 
+    console.log("Current Q: " + currentQ);
     startTimer();
     displayQuestion(currentQ);
 }
@@ -41,40 +43,55 @@ function displayQuestion(currentQuestion) {
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button name="q${currentQ}-${choice}" value="${choice}">
-        ${myQuestions[currentQuestion].answers[choice]}
-      </button>`);
+        console.log("Choice: " + choice);
+
+        console.log(myQuestions[currentQuestion].answers[choice]);
+        answers.push(`<button class="button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
+        // button.innerText = myQuestions[currentQuestion].answers[choice];
     }
 
     output.push(
-        `<div class="question"> ${myQuestions[currentQuestion].question} </div>
-        <div class="answers"> ${answers.join('')} </div>`
+        `<div class="question"> ${myQuestions[currentQuestion].question} </div>`
     );
 
+    // for (choice in myQuestions[currentQuestion].answers) {
+    //     button.innerHTML = myQuestions[currentQuestion].answers[choice];
+    //     choice++;
+    // }
     questionsElement.innerHTML = output.join("");
-    currentQ++;
+    choicesElement.innerHTML = answers.join("");
 
-    const buttonId = [];
-    for (choice in myQuestions[currentQuestion].answers) {
-        buttonId.push(`q${currentQ}-${choice}`);
-        console.log(buttonId[choice]);
-        document.getElementById(buttonId[choice]).addEventListener("click", checkAnswer(getElementById(buttonId[choice]).value))
-    }
+    let buttons = document.querySelectorAll("button.button-choice");
+    buttons.forEach(button => {
+        button.addEventListener("click", checkAnswer);
+    });
+    // const buttonId = [];
+    // for (choice in myQuestions[currentQuestion].answers) {
+    //     buttonId.push(`q${currentQ}-${choice}`);
+    //     console.log(buttonId[choice]);
+    //     document.getElementById(buttonId[choice]).addEventListener("click", checkAnswer(getElementById(buttonId[choice]).value))
+    // }
 }
 
 function endGame() {
 
 }
 
-function checkAnswer(guess) {
-
+function checkAnswer() {
+    console.log(this.value);
+    // console.log(typeOf(this.value));
+    console.log("The correct answer should be " + myQuestions[currentQ].correctAnswer);
+    // console.log(typeOf(myQuestions[currentQ].correctAnswer));
     // Checks if guess is the correct answer
-    if (guess === questionsArr.correct) {
+    if (this.value == myQuestions[currentQ].correctAnswer) {
+        console.log("Correct Answer!!");
         return true;
     } else {
         timerCount -= 5;
+        console.log("Wrong Answer!!");
         return false;
     }
+    currentQ++;
 }
 
 function startTimer() {

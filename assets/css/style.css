@@ -1,0 +1,18 @@
+* {
+    /* border: .5px solid rgba(100,100,100,.5); */
+}
+
+button {
+        color: #000;
+        cursor: pointer;
+        // display: block;
+        font-size:16px;
+        font-weight: 400;
+        line-height: 45px;
+        margin: 2em 1em;
+        max-width: 160px; 
+        position: relative;
+        text-decoration: none;
+        text-transform: uppercase;
+        width: 100%; 
+}
