@@ -10,7 +10,8 @@ var choicesElement = document.querySelector(".choices-buttons");
 var timer;
 var timerCount;
 var qLimit;
-var currentQ;
+var qIndex;
+var buttons;
 
 const myQuestions = [
     { question: "Which one is true?", answers: { 1: "False", 2: "False", 3: "True", 4: "False" }, correctAnswer: "3" },
@@ -21,31 +22,36 @@ const myQuestions = [
 
 // Functions
 function initGame() {
-    var qLimit = Object.keys(myQuestions).length;
-    currentQ = 0;
+    console.log("Initiate Game");
+    qLimit = myQuestions.length;
+    qIndex = 0;
 }
 
 function startGame() {
-    timerCount = 5;
-
-    console.log("Current Q: " + currentQ);
+    timerCount = 50;
+    startButton.disabled = true;
+    displayQuestion(qIndex);
     startTimer();
-    displayQuestion(currentQ);
+
+}
+
+function buttonListeners() {
+    buttons = document.querySelectorAll("button.button-choice");
+    buttons.forEach(button => {
+        button.addEventListener("click", checkAnswer);
+    });
+
 }
 
 function displayQuestion(currentQuestion) {
-    const output = [];
 
-    console.log(currentQ);
-    console.log(currentQuestion);
-    console.log(myQuestions[currentQuestion].answers)
+    const output = [];
 
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        console.log("Choice: " + choice);
-
-        console.log(myQuestions[currentQuestion].answers[choice]);
+        // console.log("Choice: " + choice);
+        // console.log(myQuestions[currentQuestion].answers[choice]);
         answers.push(`<button class="button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
         // button.innerText = myQuestions[currentQuestion].answers[choice];
     }
@@ -54,17 +60,10 @@ function displayQuestion(currentQuestion) {
         `<div class="question"> ${myQuestions[currentQuestion].question} </div>`
     );
 
-    // for (choice in myQuestions[currentQuestion].answers) {
-    //     button.innerHTML = myQuestions[currentQuestion].answers[choice];
-    //     choice++;
-    // }
     questionsElement.innerHTML = output.join("");
     choicesElement.innerHTML = answers.join("");
+    buttonListeners();
 
-    let buttons = document.querySelectorAll("button.button-choice");
-    buttons.forEach(button => {
-        button.addEventListener("click", checkAnswer);
-    });
     // const buttonId = [];
     // for (choice in myQuestions[currentQuestion].answers) {
     //     buttonId.push(`q${currentQ}-${choice}`);
@@ -74,24 +73,29 @@ function displayQuestion(currentQuestion) {
 }
 
 function endGame() {
-
+    console.log("THE GAME HAS ENDED!!!!");
 }
 
 function checkAnswer() {
     console.log(this.value);
     // console.log(typeOf(this.value));
-    console.log("The correct answer should be " + myQuestions[currentQ].correctAnswer);
-    // console.log(typeOf(myQuestions[currentQ].correctAnswer));
+    console.log("The correct answer should be " + myQuestions[qIndex].correctAnswer);
+    // console.log(typeOf(myQuestions[qIndex].correctAnswer));
     // Checks if guess is the correct answer
-    if (this.value == myQuestions[currentQ].correctAnswer) {
+    if (this.value == myQuestions[qIndex].correctAnswer) {
         console.log("Correct Answer!!");
-        return true;
     } else {
         timerCount -= 5;
         console.log("Wrong Answer!!");
-        return false;
     }
-    currentQ++;
+    console.log("Current Q: " + qIndex);
+    console.log("Last Q: " + qLimit);
+    if (qIndex <= qLimit) {
+        displayQuestion(qIndex);
+        qIndex++;
+    } else {
+        endGame();
+    }
 }
 
 function startTimer() {
@@ -101,14 +105,14 @@ function startTimer() {
         timerElement.textContent = timerCount;
         if (timerCount >= 0) {
             // Tests if win condition is met
-            if (qLimit && timerCount > 0) {
+            if ((qIndex === qLimit) && timerCount > 0) {
                 // Clears interval and stops timer
                 clearInterval(timer);
                 endGame();
             }
         }
         // Tests if time has run out
-        if (timerCount === 0) {
+        if (timerCount < 0) {
             // Clears interval
             clearInterval(timer);
             endGame();
@@ -119,7 +123,7 @@ function startTimer() {
 // Main game
 function playGame() {
 
-    initGame();
+
     startGame();
     // endGame();
 
@@ -127,3 +131,6 @@ function playGame() {
 
 // Event listener for start button
 startButton.addEventListener("click", playGame);
+
+// Initiate game when page loads
+initGame();
