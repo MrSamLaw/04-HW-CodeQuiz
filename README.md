@@ -31,7 +31,7 @@ Our client has requested that we build them a timed coding quiz with multiple-ch
 - Play again?
 
 ### Aspirational Changes
-- Allow for number input
+- Allow for key number input
 - Correct answers add time
 - Live updating of leaderboard
 
