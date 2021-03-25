@@ -3,7 +3,7 @@
 ## Description
 Our client has requested that we build them a timed coding quiz with multiple-choice questions to help them assess potential employees and their knowledge of JavaScript fundamentals.
 
-### Criteria
+## Criteria
 - Start button starts the timed game
 - Consecutive questions appear on screen when an answer is submitted
 - Time deductions for wrong answers
@@ -11,7 +11,7 @@ Our client has requested that we build them a timed coding quiz with multiple-ch
 - Score & initials are saved when game ends
 - HTML & CSS are dynamically updated
 
-### Psuedo Code
+## Psuedo Code
 - Initialize game
     - Set questions & answers
     - disable key input
@@ -35,4 +35,10 @@ Our client has requested that we build them a timed coding quiz with multiple-ch
 - Correct answers add time
 - Live updating of leaderboard
 
-### Deployment
+## Deployment
+
+## Screenshots
+
+## Inspiration
+The color styling was inspired by this image from 
+![Protect Image by Andra](assets/images/ProtectByAndra.png )

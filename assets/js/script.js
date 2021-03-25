@@ -1,6 +1,7 @@
 // Element Selectors
 var timerElement = document.querySelector(".timer-count");
 var startButton = document.querySelector(".start-button");
+var submitButton = document.querySelector(".button-submit");
 var clearButton = document.querySelector(".button-clear");
 
 var questionsSection = document.querySelector(".questions");
@@ -40,122 +41,18 @@ const myQuestions = [
 
 // Functions
 function initGame() {
+    // On Page load, prepares the page and loads scores from localStorage
     questionsSection.setAttribute("style", "display:none;");
     getScore();
     renderScores();
     qLimit = myQuestions.length;
+    userInput.disabled = true;
+    submitButton.disabled = true;
 
-}
-
-function startGame() {
-    highScoresElement.setAttribute("style", "display:none;");
-    questionsSection.setAttribute("style", "display:block;");
-    qIndex = 0;
-    correct = 0;
-    timerCount = 50;
-    startButton.disabled = true;
-    startButton.setAttribute("style", "display:none")
-    displayQuestion(qIndex);
-    startTimer();
-}
-
-function buttonListeners(action) {
-    buttons = document.querySelectorAll("button.button-choice");
-    // console.log(action);
-    if (action == "active") {
-        buttons.forEach(button => {
-            button.addEventListener("click", checkAnswer);
-        });
-    }
-    if (action == "disable") {
-        buttons.forEach(button => {
-            button.disabled = true;
-        });
-    }
-}
-
-function displayQuestion(currentQuestion) {
-
-    const output = [];
-
-    const answers = [];
-
-    for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button class="btn btn-secondary my-1 button-choice custom-pink-btn" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
-    }
-    var questionNo = qIndex + 1;
-    output.push(
-        `<div class="question"> ${questionNo} - ${myQuestions[currentQuestion].question} </div>`
-    );
-
-    questionsElement.innerHTML = output.join("");
-    choicesElement.innerHTML = answers.join("");
-    buttonListeners("active");
-
-}
-
-function endGame() {
-    buttonListeners("disable");
-    questionsSection.setAttribute("style", "display:none;");
-    highScoresElement.setAttribute("style", "display:block;");
-    userInput.disabled = false;
-    startButton.setAttribute("style", "display:inline")
-    startButton.innerText = "Play Again?";
-    startButton.disabled = false;
-
-}
-
-function checkAnswer() {
-    // console.log(this.value);
-    // console.log(typeOf(this.value));
-    // console.log("The correct answer should be " + myQuestions[qIndex].correctAnswer);
-    // console.log(typeOf(myQuestions[qIndex].correctAnswer));
-    // Checks if guess is the correct answer
-    if (this.value == myQuestions[qIndex].correctAnswer) {
-        // console.log("Correct Answer!!");
-        correct++;
-    } else {
-        timerCount -= 5;
-        // console.log("Wrong Answer!!");
-    }
-    console.log("Current Q: " + qIndex);
-    console.log("Last Q: " + qLimit);
-    qIndex++;
-    if (qIndex < qLimit) {
-        displayQuestion(qIndex);
-    } else {
-        console.log("CheckAnswer Endgame");
-        endGame();
-    }
-}
-
-function startTimer() {
-    // Sets Timer
-    timer = setInterval(function () {
-        timerCount--;
-        timerElement.textContent = timerCount;
-        if (timerCount >= 0) {
-            // Tests if win condition is met
-            if ((qIndex === qLimit) && timerCount > 0) {
-                // Clears interval and stops timer
-                clearInterval(timer);
-                console.log("setInterval Endgame");
-                endGame();
-            }
-        }
-        // Tests if time has run out
-        if (timerCount < 0) {
-            // Clears interval
-            clearInterval(timer);
-            timerCount = 0;
-            timerElement.textContent = timerCount;
-            console.log("TimerCount Endgame");
-            endGame();
-        }
-    }, 100000);
 }
 
 function getScore() {
+    //Pulls player names & Scores from localStorage if there are any
     var storedUsers = JSON.parse(localStorage.getItem("users"));
     var storedScores = JSON.parse(localStorage.getItem("scores"));
 
@@ -163,10 +60,10 @@ function getScore() {
         users = storedUsers;
         scores = storedScores;
     }
-
 }
 
 function renderScores() {
+    // Displays player name & score on the High Scores List
     highScoresList.innerHTML = "";
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
@@ -180,43 +77,140 @@ function renderScores() {
     }
 }
 
-function setScore() {
-    localStorage.setItem("users", JSON.stringify(users));
-    localStorage.setItem("scores", JSON.stringify(scores));
 
-    userInput.disabled = true;
+function startGame() {
+    // Sets/resets game for player
+    highScoresElement.setAttribute("style", "display:none;");
+    questionsSection.setAttribute("style", "display:block;");
+
+    qIndex = 0;  // Index for questions array of objects
+    correct = 0;  // The number of questions answered correctly
+    timerCount = 60;  // The total time for guesses to be made
+
+    // Disable and hide the start button once the game starts
+    startButton.disabled = true;
+    startButton.setAttribute("style", "display:none")
+
+    displayQuestion(qIndex);
+    startTimer();
 }
 
-function clearScores() {
-    users = [];
-    scores = [];
-    localStorage.removeItem("users");
-    localStorage.removeItem("scores");
-    renderScores();
+function displayQuestion(currentQuestion) {
+    // Displays questions & choices for player to answer
+
+    // Arrays used to display questions & choices
+    const output = [];
+    const answers = [];
+
+    // Take question property from myQuestions array and display it on screen
+    var questionNo = qIndex + 1;
+    output.push(
+        `<div class="question"> ${questionNo} - ${myQuestions[currentQuestion].question} </div>`
+    );
+
+    // Take answers property from myQuestions array and display it on screen
+    for (choice in myQuestions[currentQuestion].answers) {
+        answers.push(`<button class="btn btn-secondary my-1 button-choice custom-pink-btn" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
+    }
+
+    // Output questions & choices on screen as text & buttons
+    questionsElement.innerHTML = output.join("");
+    choicesElement.innerHTML = answers.join("");
+
+    buttonListeners("active");
+
 }
 
-// Main game
-function playGame() {
+function startTimer() {
+    // Sets Timer
+    timer = setInterval(function () {
+        timerCount--;
 
-    startGame();
-    // endGame();
+        //Output current time to screen
+        timerElement.textContent = timerCount;
+
+        if (timerCount >= 0) {
+            // Tests if win condition is met
+            if ((qIndex === qLimit) && timerCount > 0) {
+                // Clears interval and stops timer
+                clearInterval(timer);
+                endGame();
+            }
+        }
+        // Tests if time has run out
+        if (timerCount < 0) {
+            // Clears interval
+            clearInterval(timer);
+            timerCount = 0;
+            timerElement.textContent = timerCount;
+            endGame();
+        }
+    }, 1000);
+}
+
+function buttonListeners(action) {
+    // Function that listens for player choice and also disables choice buttons when not enabled.
+
+    buttons = document.querySelectorAll("button.button-choice");
+
+    if (action == "active") {
+        buttons.forEach(button => {
+            // Calls checkAnswer() when a choice is selected.
+            button.addEventListener("click", checkAnswer);
+        });
+    }
+    if (action == "disable") {
+        buttons.forEach(button => {
+            button.disabled = true;
+        });
+    }
+}
+
+function checkAnswer() {
+    // Checks if guess is the correct answer
+
+    if (this.value == myQuestions[qIndex].correctAnswer) {
+        // Increment correct answer count
+        correct++;
+    } else {
+        // Take 5 seconds off the clock on wrong answer
+        timerCount -= 5;
+    }
+
+    // Increment question index
+    qIndex++;
+    if (qIndex < qLimit) {
+        // Continue game if we have questions left
+        displayQuestion(qIndex);
+    } else {
+        // End game if we have finished questions
+        endGame();
+    }
+}
+
+function endGame() {
+    // End of game functions
+
+    // Hide questions section & disable choice buttons
+    questionsSection.setAttribute("style", "display:none;");
+    buttonListeners("disable");
+
+    // Show high scores section & enable Player name input
+    highScoresElement.setAttribute("style", "display:block;");
+    userInput.disabled = false;
+    submitButton.disabled = false;
+
+    // Enable Play Again button
+    startButton.setAttribute("style", "display:inline")
+    startButton.innerText = "Play Again?";
+    startButton.disabled = false;
 
 }
-initGame();
-// Event listener for start button
-startButton.addEventListener("click", playGame);
-clearButton.addEventListener("click", clearScores);
 
-// Initiate game when page loads
-userForm.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    console.log("Entered")
-
+function submitScore() {
     var userText = userInput.value.trim();
 
     if (userText === "") {
-        console.log("Error")
         return;
     }
 
@@ -228,16 +222,49 @@ userForm.addEventListener("submit", function (event) {
         scores = storedScores;
     }
 
-    // get local storage array OR assign to new array
-    // var usersFromStorage = localStorage.getItem("users") || [];
-    // var scoreFromStorage = localStorage.getItem("scores") || [];
-
     users.push(userText);
     scores.push(timerCount);
-    // usersFromStorage.push(userText);
-    // scoreFromStorage.push(timerCount);
 
+    submitButton.disabled = true;
     renderScores();
     setScore();
+}
 
+function setScore() {
+    // Adds player name and score to localStorage
+    localStorage.setItem("users", JSON.stringify(users));
+    localStorage.setItem("scores", JSON.stringify(scores));
+
+    userInput.disabled = true;
+}
+
+function clearScores() {
+    // Clears player names & scores
+
+    users = [];
+    scores = [];
+    localStorage.removeItem("users");
+    localStorage.removeItem("scores");
+    renderScores();
+}
+
+// Main game
+function playGame() {
+
+    startGame();
+
+}
+
+//Initialise game on page load
+initGame();
+
+// Event listener for start button
+startButton.addEventListener("click", playGame);
+submitButton.addEventListener("click", submitScore);
+clearButton.addEventListener("click", clearScores);
+
+// Player name input form
+userForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    submitScore();
 });
