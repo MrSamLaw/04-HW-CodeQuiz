@@ -1,6 +1,39 @@
+:root {
+    --lightGray: #C6C4CA;
+    --operaMauve: #BF8FAF;
+    --fauxRuber: #D94179;
+    --deepJungleGreen: #013A40;
+    --maastrichtBlue: #081E2D;
+    
+}
+
+
 * {
     /* border: .5px solid rgba(100,100,100,.5); */
 }
+
+.custom-blue {
+    background-color: var(--maastrichtBlue);
+    color: var(--operaMauve);
+}
+.custom-blue h1 {
+    color:var(--fauxRuber);
+}
+
+.custom-green {
+    background-color: var(--deepJungleGreen);
+    color: var(--lightGray);
+}
+.custom-pink-btn {
+    background-color: var(--fauxRuber);
+    
+    border-color:var(--operaMauve);
+}
+.custom-pink-btn:hover {
+    background-color: var(--operaMauve);
+    color:var(--deepJungleGreen);
+}
+
 
 button {
         /* color: #000;

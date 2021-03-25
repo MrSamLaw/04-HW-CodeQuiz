@@ -81,7 +81,7 @@ function displayQuestion(currentQuestion) {
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button class="btn btn-secondary my-1 button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
+        answers.push(`<button class="btn btn-secondary my-1 button-choice custom-pink-btn" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
     }
     var questionNo = qIndex + 1;
     output.push(
@@ -152,7 +152,7 @@ function startTimer() {
             console.log("TimerCount Endgame");
             endGame();
         }
-    }, 1000);
+    }, 100000);
 }
 
 function getScore() {
