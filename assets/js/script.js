@@ -54,6 +54,7 @@ function startGame() {
     correct = 0;
     timerCount = 50;
     startButton.disabled = true;
+    startButton.setAttribute("style", "display:none")
     displayQuestion(qIndex);
     startTimer();
 }
@@ -80,7 +81,7 @@ function displayQuestion(currentQuestion) {
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button class="button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
+        answers.push(`<button class="btn btn-secondary m-auto button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
     }
     var questionNo = qIndex + 1;
     output.push(
