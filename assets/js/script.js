@@ -43,10 +43,7 @@ function initGame() {
     questionsSection.setAttribute("style", "display:none;");
     getScore();
     renderScores();
-
-    // console.log("Initiate Game");
     qLimit = myQuestions.length;
-
 
 }
 
