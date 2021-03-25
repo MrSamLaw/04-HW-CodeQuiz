@@ -1,4 +1,5 @@
 # 04-HW-CodeQuiz
+![Starting Screen](assets/images/CodeQuiz01.png)
 
 ## Description
 Our client has requested that we build them a timed coding quiz with multiple-choice questions to help them assess potential employees and their knowledge of JavaScript fundamentals.
@@ -11,7 +12,19 @@ Our client has requested that we build them a timed coding quiz with multiple-ch
 - Score & initials are saved when game ends
 - HTML & CSS are dynamically updated
 
-## Psuedo Code
+## Deployment
+https://mrsamlaw.github.io/04-HW-CodeQuiz/
+
+## Screenshots
+![Mid-game screen](assets/images/CodeQuiz02.png)
+Questions & Choices
+
+![End-game screen](assets/images/CodeQuiz03.png)
+George Clooney likes this!!
+
+### Psuedo Code
+How I went about building the game
+
 - Initialize game
     - Set questions & answers
     - disable key input
@@ -30,15 +43,12 @@ Our client has requested that we build them a timed coding quiz with multiple-ch
     - Store user details & score
 - Play again?
 
-### Aspirational Changes
+#### Aspirational Changes
+Some things I'd like to build into a later version of the game
 - Allow for key number input
 - Correct answers add time
 - Live updating of leaderboard
 
-## Deployment
-
-## Screenshots
-
 ## Inspiration
-The color styling was inspired by this image from 
+The color styling was inspired by this image from this image: Protect by artist Andra (https://dribbble.com/stutpak).  
 ![Protect Image by Andra](assets/images/ProtectByAndra.png )
