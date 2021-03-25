@@ -81,7 +81,7 @@ function displayQuestion(currentQuestion) {
     const answers = [];
 
     for (choice in myQuestions[currentQuestion].answers) {
-        answers.push(`<button class="btn btn-secondary m-auto button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
+        answers.push(`<button class="btn btn-secondary my-1 button-choice" value="${choice}">${myQuestions[currentQuestion].answers[choice]}</button>`);
     }
     var questionNo = qIndex + 1;
     output.push(
@@ -99,6 +99,7 @@ function endGame() {
     questionsSection.setAttribute("style", "display:none;");
     highScoresElement.setAttribute("style", "display:block;");
     userInput.disabled = false;
+    startButton.setAttribute("style", "display:inline")
     startButton.innerText = "Play Again?";
     startButton.disabled = false;
 
